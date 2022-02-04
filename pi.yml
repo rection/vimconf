@@ -1,0 +1,52 @@
+---
+
+# - hosts: all
+#   tasks:
+    #    - name: update
+    #  apt:
+    #    name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+    #- name: install some required packages
+    #  apt:
+    #    name={{item}} state=latest update_cache=yes force_apt_get=yes
+    #  loop: ['vim','python3-pip','apt-transport-https','curl','software-properties-common','virtualenv','python3-setuptools','git','libpq-dev','net-tools','acl']
+
+- hosts: all
+  tasks:
+  - name: Run the equivalent of "apt-get update" as a separate step
+    apt:
+      update_cache: yes
+
+  - name: test dictonary in ansible
+    apt:
+      name: curl
+
+  - name: install apt
+    apt:
+      name: ca-certificates 
+
+  - name: install gnupg
+    apt:
+      name:  gnupg 
+
+  - name: install lsb
+    apt:
+      name: lsb-release
+
+  - name: get docker
+    shell: curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+  - name: add repo
+    shell:  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+  - name: Run the equivalent of "apt-get update" as a separate step
+    apt:
+      update_cache: yes
+  
+  - name: install docker
+    apt:
+      name:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+      state: present
