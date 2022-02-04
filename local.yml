@@ -12,6 +12,7 @@
     #  loop: ['vim','python3-pip','apt-transport-https','curl','software-properties-common','virtualenv','python3-setuptools','git','libpq-dev','net-tools','acl']
 
 - hosts: localhost
+  become: yes
   tasks:
   - name: Run the equivalent of "apt-get update" as a separate step
     apt:
